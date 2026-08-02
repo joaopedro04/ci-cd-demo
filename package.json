@@ -6,7 +6,6 @@
   "scripts": {
     "lint": "npm run lint:html",
     "lint:html": "html-validate \"public/**/*.html\"",
-    "build": "vercel build",
     "dev": "npx --yes serve public"
   },
   "devDependencies": {
