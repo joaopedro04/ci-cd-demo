@@ -31,7 +31,10 @@ jobs:
       - name: Procurar links quebrados
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --config lychee.toml "public/**/*.html"
+          args: >-
+            --config lychee.toml
+            --root-dir ${{ github.workspace }}/public
+            "public/**/*.html"
           fail: true
 
   build:

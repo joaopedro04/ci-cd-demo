@@ -171,8 +171,11 @@ npx serve public
 The link checker (`lychee`) is a separate binary, optional locally:
 
 ```bash
-npx --yes @lycheeverse/lychee --config lychee.toml "public/**/*.html"
+npx --yes @lycheeverse/lychee --config lychee.toml --root-dir "$PWD/public" "public/**/*.html"
 ```
+
+`--root-dir` is what lets it resolve root-relative links like `/styles.css` while the files
+are still on disk. It has to be an absolute path.
 
 ---
 
