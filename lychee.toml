@@ -1,0 +1,11 @@
+verbose = "info"
+
+accept = [200, 204, 301, 302, 429]
+
+max_retries = 2
+timeout = 20
+max_concurrency = 8
+
+include_mail = false
+
+exclude = ["\\.example($|/)", "example\\.com", "localhost"]

@@ -1,0 +1,18 @@
+{
+  "name": "ci-cd-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site estático de exemplo para demonstrar um pipeline de CI/CD com GitHub Actions e Vercel",
+  "scripts": {
+    "lint": "npm run lint:html",
+    "lint:html": "html-validate \"public/**/*.html\"",
+    "build": "vercel build",
+    "dev": "npx --yes serve public"
+  },
+  "devDependencies": {
+    "html-validate": "^8.24.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
