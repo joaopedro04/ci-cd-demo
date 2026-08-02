@@ -7,6 +7,8 @@
   --color-muted: #5b5f70;
   --color-accent: #4f46e5;
   --color-accent-contrast: #ffffff;
+  --color-code-bg: #f2f3f9;
+  --color-code-text: #2b2f45;
 
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -17,11 +19,13 @@
   --space-20: 5rem;
 
   --radius: 12px;
-  --wrap: 68rem;
+  --wrap: 52rem;
   --shadow: 0 1px 2px rgb(16 18 30 / 6%), 0 8px 24px rgb(16 18 30 / 6%);
 
   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
     sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -34,6 +38,8 @@
     --color-muted: #a2a8bd;
     --color-accent: #8b85ff;
     --color-accent-contrast: #12131c;
+    --color-code-bg: #10131d;
+    --color-code-text: #d7dbec;
     --shadow: 0 1px 2px rgb(0 0 0 / 40%), 0 8px 24px rgb(0 0 0 / 30%);
   }
 }
@@ -51,13 +57,14 @@ body {
   font-family: var(--font-sans);
   font-size: 1rem;
   line-height: 1.65;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
 h1,
 h2,
 h3 {
-  line-height: 1.2;
+  line-height: 1.25;
   text-wrap: balance;
   margin: 0 0 var(--space-4);
 }
@@ -112,21 +119,22 @@ a {
 .header-inner {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-4);
+  gap: var(--space-3) var(--space-6);
   align-items: center;
   justify-content: space-between;
   min-height: 4rem;
+  padding-block: var(--space-3);
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  font-weight: 650;
-  font-size: 1.125rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1rem;
   color: var(--color-text);
   text-decoration: none;
-  letter-spacing: -0.01em;
 }
 
 .brand-mark {
@@ -139,7 +147,8 @@ a {
 
 .nav {
   display: flex;
-  gap: var(--space-6);
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -165,21 +174,20 @@ a {
 }
 
 .hero-inner {
-  max-width: 44rem;
+  max-width: 42rem;
   text-align: center;
 }
 
 .eyebrow {
   margin-bottom: var(--space-3);
+  font-family: var(--font-mono);
   font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--color-accent);
 }
 
 .hero h1 {
-  font-size: clamp(2rem, 5.5vw, 3.25rem);
+  font-size: clamp(1.875rem, 5vw, 2.875rem);
   letter-spacing: -0.02em;
 }
 
@@ -232,67 +240,157 @@ a {
 }
 
 .section h2 {
-  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-size: clamp(1.375rem, 3.5vw, 1.875rem);
   letter-spacing: -0.015em;
+  margin-bottom: var(--space-6);
 }
 
 .section-lead {
-  max-width: 42rem;
   color: var(--color-muted);
-  margin-bottom: var(--space-12);
+  margin-bottom: var(--space-8);
 }
 
-.cards,
-.steps {
-  display: grid;
-  gap: var(--space-6);
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  margin: 0;
-  padding: 0;
-  list-style: none;
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  padding: 0.15em 0.4em;
+  border-radius: 5px;
+  background-color: var(--color-code-bg);
+  color: var(--color-code-text);
+  word-break: break-word;
 }
 
-.card {
-  padding: var(--space-8);
-  background-color: var(--color-surface);
+pre {
+  margin: 0 0 var(--space-6);
+  padding: var(--space-4) var(--space-6);
+  overflow-x: auto;
+  background-color: var(--color-code-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--color-code-text);
+}
+
+pre code {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  font-size: inherit;
+  word-break: normal;
+}
+
+.diagram {
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
   box-shadow: var(--shadow);
 }
 
-.card h3,
-.step h3 {
-  font-size: 1.0625rem;
+table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  text-align: left;
 }
 
-.card p:last-child,
-.step p:last-child {
-  margin-bottom: 0;
+th,
+td {
+  padding: var(--space-4) var(--space-6);
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-border);
+}
+
+thead th {
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  background-color: var(--color-bg-alt);
+}
+
+tbody tr:last-child th,
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+tbody th {
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+blockquote {
+  margin: var(--space-8) 0 0;
+  padding: var(--space-4) var(--space-6);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background-color: color-mix(in srgb, var(--color-accent) 7%, transparent);
   color: var(--color-muted);
 }
 
-.step {
-  padding-top: var(--space-4);
-  border-top: 2px solid var(--color-accent);
+blockquote p:last-child {
+  margin-bottom: 0;
 }
 
-.step-number {
-  display: block;
-  margin-bottom: var(--space-2);
+.steps-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps-list > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 3rem;
+  padding-bottom: var(--space-8);
+}
+
+.steps-list > li:not(:last-child) {
+  border-left: 1px solid var(--color-border);
+  margin-left: 1rem;
+  padding-left: 2rem;
+}
+
+.steps-list > li::before {
+  content: counter(step);
+  position: absolute;
+  left: -1rem;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  color: var(--color-accent-contrast);
+  font-family: var(--font-mono);
   font-size: 0.8125rem;
-  font-weight: 650;
-  color: var(--color-accent);
-  font-variant-numeric: tabular-nums;
 }
 
-.contato {
-  max-width: 42rem;
-  text-align: center;
+.steps-list > li:last-child {
+  margin-left: 1rem;
+  padding-left: 2rem;
+  padding-bottom: 0;
 }
 
-.contato .section-lead {
-  margin-inline: auto;
-  margin-bottom: var(--space-8);
+.steps-list h3 {
+  font-size: 1.0625rem;
+  margin-bottom: var(--space-2);
+  padding-top: 0.125rem;
+}
+
+.steps-list p:last-child {
+  margin-bottom: 0;
+  color: var(--color-muted);
 }
 
 .site-footer {
@@ -302,7 +400,6 @@ a {
 }
 
 .footer-inner {
-  max-width: 42rem;
   color: var(--color-muted);
   font-size: 0.9375rem;
 }

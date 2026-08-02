@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Órbita — estúdio de produto digital</title>
+    <title>ci-cd-demo — a CI/CD pipeline with GitHub Actions and Vercel</title>
     <meta
       name="description"
-      content="Órbita é um estúdio fictício de produto digital, usado como página de exemplo em um demo de CI/CD com GitHub Actions e Vercel."
+      content="A minimal static site used as an excuse to wire up a complete CI/CD pipeline with GitHub Actions and Vercel: lint and link checks gate every preview and production deploy."
     />
     <link rel="stylesheet" href="/styles.css" />
     <link
@@ -16,115 +16,321 @@
   </head>
 
   <body>
-    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <a class="skip-link" href="#content">Skip to content</a>
 
     <header class="site-header">
       <div class="wrap header-inner">
         <a class="brand" href="/">
           <span class="brand-mark" aria-hidden="true"></span>
-          Órbita
+          ci-cd-demo
         </a>
 
-        <nav aria-label="Navegação principal">
+        <nav aria-label="Main navigation">
           <ul class="nav">
-            <li><a href="#servicos">Serviços</a></li>
-            <li><a href="#processo">Processo</a></li>
-            <li><a href="#contato">Contato</a></li>
+            <li><a href="#flow">Flow</a></li>
+            <li><a href="#two-files">Two files</a></li>
+            <li><a href="#setup">Setup</a></li>
+            <li><a href="#exercises">Exercises</a></li>
+            <li>
+              <a href="https://github.com/joaopedro04/ci-cd-demo">GitHub</a>
+            </li>
           </ul>
         </nav>
       </div>
     </header>
 
-    <main id="conteudo">
+    <main id="content">
       <section class="hero">
         <div class="wrap hero-inner">
-          <p class="eyebrow">Estúdio de produto digital</p>
-          <h1>Produtos que saem do papel e entram no ar.</h1>
+          <p class="eyebrow">GitHub Actions + Vercel</p>
+          <h1>This page was shipped by the pipeline it describes.</h1>
           <p class="lead">
-            Desenhamos, construímos e colocamos em produção interfaces que as pessoas
-            realmente usam — do primeiro rascunho ao deploy contínuo.
+            A minimal static site — plain HTML and CSS, no framework, no real build step —
+            used as an excuse to wire up a complete CI/CD pipeline.
           </p>
           <div class="cta-row">
-            <a class="btn btn-primary" href="#contato">Falar com a gente</a>
-            <a class="btn btn-ghost" href="#processo">Como trabalhamos</a>
+            <a class="btn btn-primary" href="https://github.com/joaopedro04/ci-cd-demo">
+              Read the source
+            </a>
+            <a class="btn btn-ghost" href="#flow">See the flow</a>
           </div>
         </div>
       </section>
 
-      <section id="servicos" class="section">
+      <section class="section">
         <div class="wrap">
-          <h2>O que fazemos</h2>
-          <p class="section-lead">
-            Times pequenos, ciclos curtos e entregas que chegam ao usuário toda semana.
-          </p>
+          <h2>The site isn't the point</h2>
+          <p class="section-lead">These two files are.</p>
 
-          <ul class="cards">
-            <li class="card">
-              <h3>Design de produto</h3>
-              <p>
-                Pesquisa, fluxos e protótipos navegáveis. Validamos a ideia antes de
-                escrever a primeira linha de código.
-              </p>
-            </li>
-            <li class="card">
-              <h3>Engenharia web</h3>
-              <p>
-                Front-end acessível e performático, com testes automatizados e um
-                pipeline que entrega sem drama.
-              </p>
-            </li>
-            <li class="card">
-              <h3>Plataforma e deploy</h3>
-              <p>
-                Infraestrutura enxuta, observabilidade desde o primeiro dia e entregas
-                contínuas em ambientes de preview e produção.
-              </p>
-            </li>
-          </ul>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">File</th>
+                  <th scope="col">Role</th>
+                  <th scope="col">What it does</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">
+                    <a
+                      href="https://github.com/joaopedro04/ci-cd-demo/blob/main/.github/workflows/ci.yml"
+                      ><code>ci.yml</code></a
+                    >
+                  </th>
+                  <td><strong>CI</strong> — Continuous Integration</td>
+                  <td>
+                    Tells you whether the code is healthy: validates the HTML and looks for
+                    broken links. Publishes nothing.
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    <a
+                      href="https://github.com/joaopedro04/ci-cd-demo/blob/main/.github/workflows/deploy.yml"
+                      ><code>deploy.yml</code></a
+                    >
+                  </th>
+                  <td><strong>CD</strong> — Continuous Delivery</td>
+                  <td>
+                    Ships to Vercel: a preview on every PR, production on every merge to
+                    <code>main</code>.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
-      <section id="processo" class="section section-alt">
+      <section id="flow" class="section section-alt">
         <div class="wrap">
-          <h2>Como trabalhamos</h2>
-          <p class="section-lead">
-            Quatro etapas, sempre na mesma ordem, sempre visíveis para o cliente.
+          <h2>The flow</h2>
+
+          <pre class="diagram">
+   you open a PR
+        │
+        ▼
+   ┌─────────┐   failed   ┌──────────────────────┐
+   │   CI    │───────────▶│ nothing gets shipped │
+   │ lint +  │            └──────────────────────┘
+   │ build   │
+   └────┬────┘
+        │ passed
+        ▼
+   ┌──────────────────┐
+   │ PREVIEW deploy   │──▶ URL commented on the PR
+   └──────────────────┘
+
+   merge to main
+        │
+        ▼
+   CI ──passed──▶ PRODUCTION deploy</pre
+          >
+
+          <p>
+            <strong>CI</strong> answers "is this correct?". <strong>CD</strong> answers "is
+            this live yet?". The rule tying them together: nothing ships without passing CI
+            first.
+          </p>
+        </div>
+      </section>
+
+      <section id="two-files" class="section">
+        <div class="wrap">
+          <h2>Why two files, and how one blocks the other</h2>
+
+          <p>
+            Splitting CI from CD is the standard move: one responsibility per file. The catch
+            is that <code>needs:</code> — the keyword that makes one job wait for another —
+            <strong>does not cross workflow files</strong>. Two independent workflows would
+            run in parallel, and the deploy would go out even with a failing lint.
           </p>
 
-          <ol class="steps">
-            <li class="step">
-              <span class="step-number">01</span>
-              <h3>Descoberta</h3>
-              <p>Entendemos o problema, o usuário e as restrições reais do negócio.</p>
+          <p>
+            The solution used here: <code>ci.yml</code> is a
+            <strong>reusable workflow</strong>. It declares
+          </p>
+
+          <pre><code>on:
+  workflow_call:</code></pre>
+
+          <p>and <code>deploy.yml</code> calls it as if it were one of its own jobs:</p>
+
+          <pre><code>jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
+
+  preview:
+    needs: ci      # ← the gate</code></pre>
+
+          <p>
+            Note that <code>ci.yml</code> does <strong>not</strong> listen to
+            <code>pull_request</code> or <code>push</code> on its own. If it did, CI would run
+            twice per PR: once by itself, and once called by the deploy.
+          </p>
+
+          <blockquote>
+            <p>
+              <strong>An alternative we didn't use:</strong> the <code>workflow_run</code>
+              trigger, which fires one workflow when another finishes. It works, but it always
+              runs in the context of the default branch, which makes PR preview deploys
+              considerably more awkward. For this case, <code>workflow_call</code> is simpler
+              and easier to read.
+            </p>
+          </blockquote>
+        </div>
+      </section>
+
+      <section class="section section-alt">
+        <div class="wrap">
+          <h2>Why the Vercel CLI instead of the automatic integration</h2>
+
+          <p>
+            Vercel can connect to your GitHub repository and deploy on its own, without a
+            single line of YAML. That's the easy path — and exactly why we avoid it here: the
+            deploy becomes a black box you can't read, version, or explain.
+          </p>
+
+          <p>
+            In this project the deploy runs through the Vercel CLI inside the workflow. That's
+            why
+            <a
+              href="https://github.com/joaopedro04/ci-cd-demo/blob/main/vercel.json"
+              ><code>vercel.json</code></a
+            >
+            contains:
+          </p>
+
+          <pre><code>"git": { "deploymentEnabled": { "main": false } }</code></pre>
+
+          <p>
+            This <strong>turns off Vercel's automatic deploys for the <code>main</code>
+            branch</strong>. Without that line, every push would trigger two deploys — the
+            workflow's and Vercel's — and the pipeline would lose its purpose.
+          </p>
+
+          <p>The deploy is three commands, and the order matters:</p>
+
+          <pre><code>vercel pull --environment=preview   # fetch the project's config and env vars
+vercel build                        # build HERE, on the GitHub runner
+vercel deploy --prebuilt            # upload the finished output</code></pre>
+
+          <p>
+            <code>--prebuilt</code> is the interesting bit: instead of shipping source code for
+            Vercel to build on their side, the build happens on the runner, where you can see
+            every log line. Vercel only receives the final artifact.
+          </p>
+        </div>
+      </section>
+
+      <section id="setup" class="section">
+        <div class="wrap">
+          <h2>Setting it up from scratch</h2>
+
+          <ol class="steps-list">
+            <li>
+              <h3>Create the Vercel project</h3>
+              <pre><code>npm install --global vercel
+vercel login
+vercel link</code></pre>
+              <p>
+                This creates a local, git-ignored link file holding two values:
+                <code>orgId</code> and <code>projectId</code>. Keep both handy.
+              </p>
             </li>
-            <li class="step">
-              <span class="step-number">02</span>
-              <h3>Protótipo</h3>
-              <p>Uma versão navegável em duas semanas, para testar com gente de verdade.</p>
+            <li>
+              <h3>Generate an access token</h3>
+              <p>
+                At <strong>vercel.com → Settings → Tokens</strong>, create a token. Scope it to
+                the team that owns the project — a token scoped to a single project cannot
+                resolve the project from environment variables alone, which is how CI does it.
+              </p>
             </li>
-            <li class="step">
-              <span class="step-number">03</span>
-              <h3>Construção</h3>
-              <p>Entregas semanais, revisão por pares e checks automáticos em cada mudança.</p>
+            <li>
+              <h3>Register the secrets on GitHub</h3>
+              <p>
+                Under <strong>Settings → Secrets and variables → Actions</strong>, add
+                <code>VERCEL_TOKEN</code>, <code>VERCEL_ORG_ID</code> and
+                <code>VERCEL_PROJECT_ID</code>. The workflows read them via
+                <code>${{ secrets.NAME }}</code>; they never show up in the logs, because
+                GitHub masks them automatically.
+              </p>
             </li>
-            <li class="step">
-              <span class="step-number">04</span>
-              <h3>Operação</h3>
-              <p>Monitoramento, ajustes e melhoria contínua depois que o produto está no ar.</p>
+            <li>
+              <h3>Publish the repository</h3>
+              <p>Push to <code>main</code> and the pipeline takes over from there.</p>
             </li>
           </ol>
         </div>
       </section>
 
-      <section id="contato" class="section">
-        <div class="wrap contato">
-          <h2>Vamos conversar</h2>
-          <p class="section-lead">
-            Conte o que você quer construir. Respondemos em até dois dias úteis.
-          </p>
+      <section class="section section-alt">
+        <div class="wrap">
+          <h2>Running the checks locally</h2>
+
           <p>
-            <a class="btn btn-primary" href="mailto:ola@orbita.example">ola@orbita.example</a>
+            The exact same commands CI runs — no lint logic lives inside the YAML, it lives in
+            <code>package.json</code>:
           </p>
+
+          <pre><code>npm ci
+npm run lint</code></pre>
+
+          <p>To view the site:</p>
+
+          <pre><code>npx serve public</code></pre>
+        </div>
+      </section>
+
+      <section id="exercises" class="section">
+        <div class="wrap">
+          <h2>Exercises</h2>
+          <p class="section-lead">
+            Each one exists to make a different part of the pipeline react.
+          </p>
+
+          <ol class="steps-list">
+            <li>
+              <h3>Break a link</h3>
+              <p>
+                Swap one of the footer links for a URL that doesn't exist, open a PR, and watch
+                the lint job fail — and no deploy happen. This is the core demonstration.
+              </p>
+            </li>
+            <li>
+              <h3>Break the HTML</h3>
+              <p>
+                Drop the <code>lang</code> attribute from <code>&lt;html&gt;</code>, or put an
+                <code>&lt;h3&gt;</code> directly inside a <code>&lt;ul&gt;</code>, and watch
+                <code>html-validate</code> complain.
+              </p>
+            </li>
+            <li>
+              <h3>Open a real PR</h3>
+              <p>
+                Change some copy and follow it through: CI green → preview deployed → URL
+                commented on the PR. Merge it and watch production update.
+              </p>
+            </li>
+            <li>
+              <h3>Add a new job</h3>
+              <p>
+                A Prettier formatting step, for instance. Where does it belong — in
+                <code>ci.yml</code> alongside the lint, or after it with <code>needs:</code>?
+              </p>
+            </li>
+            <li>
+              <h3>Make CI required</h3>
+              <p>
+                Under Settings → Branches, require the CI check before a merge to
+                <code>main</code> is allowed. That's when the pipeline stops being a
+                suggestion.
+              </p>
+            </li>
+          </ol>
         </div>
       </section>
     </main>
@@ -132,12 +338,15 @@
     <footer class="site-footer">
       <div class="wrap footer-inner">
         <p>
-          Órbita é um estúdio fictício. Esta página existe para demonstrar um pipeline de
-          CI/CD com
-          <a href="https://docs.github.com/actions">GitHub Actions</a> e
+          Built as a teaching demo. Source on
+          <a href="https://github.com/joaopedro04/ci-cd-demo">GitHub</a>, deployed with
+          <a href="https://docs.github.com/actions">GitHub Actions</a> and
           <a href="https://vercel.com/docs">Vercel</a>.
         </p>
-        <p class="footer-meta">Conteúdo de exemplo — sem fins comerciais.</p>
+        <p class="footer-meta">
+          Every change to this page passed an HTML validator and a link checker before it
+          reached you.
+        </p>
       </div>
     </footer>
   </body>
